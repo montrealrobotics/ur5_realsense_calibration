@@ -5,7 +5,7 @@
 
 Make sure the following environment:
 
-* ROS kinetic
+* ROS Noetic
 * MoveIt 
 * librealsense & realsense-ros
 
@@ -18,24 +18,26 @@ cd  ~/catkin_ws
 catkin_make
 ```
 
-2. Install dependence packages:
+2. Install package dependencies:
 
 ```
-$ sudo apt-get install ros-kinetic-visp
-$ sudo apt-get install ros-kinetic-industrial-msgs
-$ sudo apt-get install ros-kinetic-ros-control ros-kinetic-ros-controllers
+$ sudo apt install ros-noetic-visp
+$ sudo apt install ros-noetic-industrial-msgs
+$ sudo apt install ros-noetic-ros-control ros-noetic-ros-controllers
+$ sudo apt install ros-noetic-realsense2-camera
 ```
+Setup your UR robot packages following the readme [here](https://github.com/montrealrobotics/REAL_ur_robots)
 
 
 3. Download the calibration lib
 ```
 $ cd ~/catkin_ws/src
-$ git clone https://github.com/portgasray/ur5_realsense_calibarion.git
+$ git clone https://github.com:montrealrobotics/ur5_realsense_calibration.git
 ```
 or
 ```
-$ git clone https://github.com/portgasray/ur5_realsense_calibarion.git
-$ cd  ur5_realsense_calibarion
+$ git clone https://github.com:montrealrobotics/ur5_realsense_calibration.git
+$ cd  ur5_realsense_calibration
 $ git submodule foreach --recursive git submodule init
 $ git submodule foreach --recursive git submodule update
 ```
@@ -44,7 +46,7 @@ $ git submodule foreach --recursive git submodule update
 $ catkin_make
 ```
 
-:star: Before excuting roslaunch command, you should to preform belowing cmd, **Always remember it !**
+:star: Before excuting roslaunch command, you should remember to perform the cmd below, **Always remember it !**
 
 ```
 cd ~/catkin_ws
@@ -55,28 +57,32 @@ or a convenient way（if you have at least two workspaces, not recommended)
 $ echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc
 $ source ~/.bashrc
 ```
+
+### Aruco markers
+You can print markers fom [here](https://tn1ck.github.io/aruco-print/). The default marker ID specified in the launch file is 582 and the size is 0.1m.
+
 ### Excution
 
-* launch communicaiton with real ur5 robot using IP
+* launch communication with real ur5 robot using IP
 ```
-$ cd ~/catkin_ws
-$ roslaunch ur_modern_driver ur5_bringup.launch limited:=true robot_ip:=169.254.6.80
+$ roslaunch real_ur_robots_bringup real_ur5e_bringup.launch sim:=false robot_ip:=192.168.1.102
 ```
 
 * launch moveit 
 ```
-$ cd ~/catkin_ws
-$ roslaunch ur5_moveit_config ur5_moveit_planning_execution.launch limited:=true
+$ roslaunch ur5e_moveit_config moveit_planning_execution.launch sim:=false
 ```
 * launch point cloud
 ```
-$ cd ~/catkin_ws
 $ roslaunch realsense2_camera rs_rgbd.launch
 ```
 * launch calibration program
 ```
-$ cd ~/catkin_ws
 $ roslaunch easy_handeye ur5_realsense_handeyecalibration.launch
+```
+Arguments can be added to this launch to change the marker size or the marker ID. For example:
+```
+$ roslaunch easy_handeye ur5_realsense_handeyecalibration.launch marker_size:=0.15 marker_id:=0
 ```
 
 After that, you will see **three** GUI following(make sure your librealsense was installed at single path and the version accord with environment):
