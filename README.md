@@ -25,6 +25,7 @@ $ sudo apt install ros-noetic-visp
 $ sudo apt install ros-noetic-industrial-msgs
 $ sudo apt install ros-noetic-ros-control ros-noetic-ros-controllers
 $ sudo apt install ros-noetic-realsense2-camera
+$ sudo apt install ros-noetic-rgbd-launch
 ```
 Setup your UR robot packages following the readme [here](https://github.com/montrealrobotics/REAL_ur_robots)
 
