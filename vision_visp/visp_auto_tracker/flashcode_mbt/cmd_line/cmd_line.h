@@ -1,16 +1,20 @@
 #ifndef __CMD_LINE_H__
 #define __CMD_LINE_H__
+
 #include <boost/program_options/cmdline.hpp>
 #include <boost/program_options/variables_map.hpp>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>
 #include <exception>
 #include <string>
-#include <visp/vpConfig.h>
-#include <visp/vpPoint.h>
+#include <visp3/core/vpConfig.h>
+#include <visp3/core/vpPoint.h>
+
 namespace po = boost::program_options;
-class CmdLine{
- private:
+
+class CmdLine
+{
+private:
   boost::program_options::variables_map vm_;
   bool verbose_;
   bool show_fps_;
@@ -32,6 +36,7 @@ class CmdLine{
   double mbt_dynamic_range_;
   std::string data_dir_;
   std::string pattern_name_;
+  std::string detector_subtype_;
   std::string var_file_;
   std::string single_image_name_;
   std::vector<vpPoint> flashcode_points_3D_;
@@ -45,9 +50,9 @@ class CmdLine{
   int code_message_index_; // Index in the vector of code messages that were found
   void loadConfig(std::string& config_file);
   void common();
- public:
+public:
   enum DETECTOR_TYPE{
-    DMTX, ZBAR
+    DMTX, ZBAR, APRIL
   };
   enum TRACKER_TYPE{
     KLT, MBT, KLT_MBT
@@ -142,6 +147,8 @@ class CmdLine{
   std::vector<vpPoint>& get_outer_points_3D();
 
   DETECTOR_TYPE get_detector_type() const;
+
+  std::string get_detector_subtype() const;
 
   TRACKER_TYPE get_tracker_type() const;
 

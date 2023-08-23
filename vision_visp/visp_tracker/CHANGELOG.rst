@@ -2,6 +2,48 @@
 Changelog for package visp_tracker
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.13.1 (2022-02-20)
+-------------------
+
+0.13.0 (2022-02-16)
+-------------------
+
+0.12.1 (2021-04-22)
+-------------------
+* CMake fixes
+* Contributors: Fabien Spindler
+
+0.12.0 (2021-04-21)
+-------------------
+* Fix warnings detected by catkin_lint
+* Fix warning detected during packaging
+* Update README with Noetic support
+* Use python3 on neotic
+* Fix compat with Ubuntu 20.04
+* Moves tracker_ref_frame from extern to param (#97)
+* Contributors: Fabien Spindler
+
+0.11.0 (2019-05-27)
+-------------------
+* Update with Melodic
+* Fix memory leak
+* Introduce vpMbGenericTracker and visp3 headers in visp_auto_tracker
+* Introduce visp3 headers
+* Code indentation
+* Introduce vpMbGenericTracker
+* Introduce vpHandEyeCalibration class
+* Fix build for melodic (Closes #88)
+* Fix compilation on 17.04 by adding missing boost/format.hpp inclusion
+* Contributors: Fabien Spindler
+
+0.10.0 (2017-02-10)
+-------------------
+* Fix catkin_lint warnings level 2
+* Fix OpenCV issue when reconfiguring the visp_tracker (Closes `#58 <https://github.com/lagadic/vision_visp/issues/58>`_)
+* kinetic-0.9.3
+* Prepare changelogs
+* Contributors: Fabien Spindler
+
 0.7.0 (2014-03-12)
 ------------------
 * visp_tracker/package.xml: swithc license to GPLv2 to match the other packages.

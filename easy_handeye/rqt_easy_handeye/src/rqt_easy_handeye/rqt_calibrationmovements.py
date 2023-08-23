@@ -14,7 +14,7 @@ except ImportError:
         raise ImportError('Could not import QWidgets')
 import rospy
 import numpy as np
-from itertools import chain, izip
+from itertools import chain
 from copy import deepcopy
 import math
 import sys
@@ -40,7 +40,7 @@ class CalibrationMovements:
         pos_deltas = [quaternion_from_euler(*rot_axis*angle_delta) for rot_axis in basis]
         neg_deltas = [quaternion_from_euler(*rot_axis*(-angle_delta)) for rot_axis in basis]
 
-        quaternion_deltas = list(chain.from_iterable(izip(pos_deltas, neg_deltas)))  # interleave
+        quaternion_deltas = list(chain.from_iterable(zip(pos_deltas, neg_deltas)))  # interleave
 
         final_rots = []
         for qd in quaternion_deltas:
@@ -51,7 +51,7 @@ class CalibrationMovements:
         pos_deltas = [quaternion_from_euler(*rot_axis*angle_delta/2) for rot_axis in basis]
         neg_deltas = [quaternion_from_euler(*rot_axis*(-angle_delta/2)) for rot_axis in basis]
 
-        quaternion_deltas = list(chain.from_iterable(izip(pos_deltas, neg_deltas)))  # interleave
+        quaternion_deltas = list(chain.from_iterable(zip(pos_deltas, neg_deltas)))  # interleave
         for qd in quaternion_deltas:
             final_rots.append(list(qd))
 
@@ -90,8 +90,9 @@ class CalibrationMovements:
         if len(self.fallback_joint_limits) == 6:
             joint_limits = joint_limits[1:]
         for fp in self.poses:
+            rospy.logwarn(self.poses)
             self.mgc.set_pose_target(fp)
-            plan = self.mgc.plan()
+            plan = self.mgc.plan()[1]
             if len(plan.joint_trajectory.points) == 0 or CalibrationMovements.is_crazy_plan(plan, joint_limits):
                 return False
         return True
@@ -112,6 +113,7 @@ class CalibrationMovements:
 
     @staticmethod
     def rot_per_joint(plan, degrees=False):
+        rospy.logwarn(plan)
         np_traj = np.array([p.positions for p in plan.joint_trajectory.points])
         if len(np_traj) == 0:
             raise ValueError
@@ -248,7 +250,7 @@ class CalibrationMovementsGUI(QWidget):
             if plan is None:
                 self.guide_lbl.setText('Failed planning to center position: try again')
             else:
-                self.local_mover.execute_plan(plan)
+                self.local_mover.execute_plan(plan[1])
         if self.current_pose < len(self.local_mover.poses)-1:
             self.current_pose += 1
         self.state = CalibrationMovementsGUI.GOOD_STARTING_POSITION
@@ -257,7 +259,7 @@ class CalibrationMovementsGUI(QWidget):
     def handle_plan(self):
         self.guide_lbl.setText('Planning to the next position. Click on execute when a good one was found')
         if self.current_pose >= 0:
-            self.current_plan = self.local_mover.plan_to_pose(self.local_mover.poses[self.current_pose])
+            self.current_plan = self.local_mover.plan_to_pose(self.local_mover.poses[self.current_pose])[1]
             if CalibrationMovements.is_crazy_plan(self.current_plan, self.local_mover.fallback_joint_limits):  #TODO: sort out this limits story
                 self.state = CalibrationMovementsGUI.BAD_PLAN
             else:
@@ -289,8 +291,8 @@ class RqtCalibrationMovements(Plugin):
                             help="Put plugin in silent mode")
         args, unknowns = parser.parse_known_args(context.argv())
         if not args.quiet:
-            print 'arguments: ', args
-            print 'unknowns: ', unknowns
+            print('arguments: ', args)
+            print('unknowns: ', unknowns)
 
         # Create QWidget
         self._widget = CalibrationMovementsGUI()
