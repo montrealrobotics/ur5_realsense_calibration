@@ -3,7 +3,7 @@
      
         <arg name="robot_ip" doc="The IP address of the UR5 robot" />
     		<!--<arg name="marker_frame" default="aruco_marker_frame"/>-->
-        <arg name="marker_size" doc="Size of the ArUco marker used, in meters" default="0.079" />
+        <arg name="marker_size" doc="Size of the ArUco marker used, in meters" default="0.1" />
         <arg name="marker_id" doc="The ID of the ArUco marker used" default="582" />
      
         <!-- start the realsense -->
