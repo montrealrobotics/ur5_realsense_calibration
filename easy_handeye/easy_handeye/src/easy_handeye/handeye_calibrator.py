@@ -106,7 +106,7 @@ class HandeyeCalibrator(object):
 
         :rtype: rospy.Time
         """
-        now = rospy.Time.now()
+        now = rospy.Time(0)
         self.listener.waitForTransform(self.robot_base_frame, self.robot_effector_frame, now, rospy.Duration(10))
         self.listener.waitForTransform(self.tracking_base_frame, self.tracking_marker_frame, now, rospy.Duration(10))
         return now
